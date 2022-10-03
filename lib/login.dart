@@ -1,165 +1,128 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:belajarflutter/register_view.dart';
-import 'package:aplikasi1/theme/theme.dart';
-import 'package:aplikasi1/widgets/custom_checkbox.dart';
-import 'package:aplikasi1/widgets/primary_button.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
-
+class LoginScreen extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _LoginScreen createState() => _LoginScreen();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  bool passwordVisible = false;
-  void togglePassword() {
-    setState(() {
-      passwordVisible = !passwordVisible;
-    });
+class _LoginScreen extends State<LoginScreen> {
+  @override
+  void initState() {
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(24, 40, 24, 0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'APP Flutter\nLogin',
-                    style: heading2.copyWith(color: textBlack),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Image.asset(
-                    'assets/images/',
-                    width: 99,
-                    height: 4,
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 48,
-              ),
-              Form(
-                  child: Column(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        color: textWhiteGrey,
-                        borderRadius: BorderRadius.circular(14)),
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                          hintText: 'Email',
-                          hintStyle: heading6.copyWith(color: textGrey),
-                          border:
-                              OutlineInputBorder(borderSide: BorderSide.none)),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 32,
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        color: textWhiteGrey,
-                        borderRadius: BorderRadius.circular(14)),
-                    child: TextFormField(
-                      obscureText: !passwordVisible,
-                      decoration: InputDecoration(
-                          hintText: 'Password',
-                          hintStyle: heading6.copyWith(color: textGrey),
-                          suffixIcon: IconButton(
-                            color: textGrey,
-                            splashRadius: 1,
-                            icon: Icon(passwordVisible
-                                ? Icons.visibility_outlined
-                                : Icons.visibility_off_outlined),
-                            onPressed: togglePassword,
-                          ),
-                          border:
-                              OutlineInputBorder(borderSide: BorderSide.none)),
-                    ),
-                  )
-                ],
-              )),
-              SizedBox(
-                height: 32,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  CustomCheckbox(),
-                  SizedBox(
-                    width: 12,
-                  ),
-                  Text(
-                    'Remember me',
-                    style: regular16pt,
-                  )
-                ],
-              ),
-              SizedBox(
-                height: 32,
-              ),
-              CustomPrimaryButton(
-                buttonColor: primaryBlue,
-                textValue: 'Login',
-                textColor: Colors.white,
-              ),
-              SizedBox(
-                height: 24,
-              ),
-              Center(
-                child: Text(
-                  'Or',
-                  style: heading6.copyWith(color: textGrey),
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Color.fromARGB(255, 19, 1, 99),
+          title: Center(
+              child: Text(
+            "Kooprasi Undiksha",
+            style: TextStyle(
+              fontSize: 24,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+              fontFamily: 'HelveticaNeue',
+            ),
+          )),
+        ),
+        body: Container(
+          child: Center(
+            child: Column(
+              children: [
+                Container(
+                  padding: EdgeInsets.fromLTRB(0, 40, 0, 20),
+                  width: 200,
+                  child: Image.asset("assets/images/UNDIKSHA.png"),
                 ),
-              ),
-              SizedBox(
-                height: 24,
-              ),
-              CustomPrimaryButton(
-                buttonColor: colorLight,
-                textValue: 'Login with Google',
-                textColor: textBlack,
-              ),
-              SizedBox(
-                height: 50,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  // Text(
-                  //   'Belum punya akun? ',
-                  //   style: regular16pt.copyWith(color: textGrey),
-                  // ),
-                  // // GestureDetector(
-                  // //   onTap: () {
-                  // //     Navigator.push(
-                  // //         context,
-                  // //         MaterialPageRoute(
-                  // //             builder: (context) => RegisterPage()));
-                  // //   },
-                  //   child: Text(
-                  //     'Register',
-                  //     style: regular16pt.copyWith(color: primaryBlue),
-                  //   ),
-                  // )
-                ],
-              )
-            ],
+                Container(
+                  margin: EdgeInsets.all(4),
+                  padding: EdgeInsets.all(30.0),
+                  decoration: BoxDecoration(
+                    color: Color.fromARGB(255, 247, 247, 247),
+                    border: Border.all(color: Colors.black, width: 2.0),
+                  ),
+                  child: Column(
+                    children: [
+                      _TextField(),
+                      _LoginButton(context),
+                    ],
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+}
+
+Widget _TextField() {
+  return Column(
+    children: <Widget>[
+      Padding(padding: EdgeInsets.only(top: 5)),
+      TextFormField(
+        decoration: InputDecoration(
+            // border: Border.all(color: Colors.black),
+            // border: UnderlineInputBorder(),
+            // enabledBorder: UnderlineInputBorder(
+            //     borderSide: BorderSide(color: Colors.black)),
+            // focusedBorder: UnderlineInputBorder(
+            //     borderSide: BorderSide(color: Colors.white, width: 3.0)),
+            hintText: "Masukan Username",
+            hintStyle: TextStyle(color: Colors.black)),
+        style: TextStyle(color: Colors.black),
+        autofocus: false,
+      ),
+      Padding(padding: EdgeInsets.only(top: 12.0)),
+      TextFormField(
+        decoration: InputDecoration(
+            // border: UnderlineInputBorder(),
+            // enabledBorder: UnderlineInputBorder(
+            //     borderSide: BorderSide(color: Colors.black)),
+            // focusedBorder: UnderlineInputBorder(
+            //     borderSide: BorderSide(color: Colors.white, width: 3.0)),
+            hintText: "Masukan Password",
+            hintStyle: TextStyle(color: Colors.black)),
+        style: TextStyle(color: Colors.black),
+        obscureText: true,
+        autofocus: false,
+      ),
+    ],
+  );
+}
+
+Widget _LoginButton(BuildContext context) {
+  return Column(
+    children: <Widget>[
+      Padding(padding: EdgeInsets.only(top: 16, bottom: 20)),
+      // InkWell(
+      //   child: Container(
+      //     padding: EdgeInsets.symmetric(vertical: 8.0),
+      //     width: 200,
+      //     child: Text(
+      //       "Login",
+      //       style: TextStyle(color: Colors.white),
+      //       textAlign: TextAlign.center,
+      //     ),
+      //     decoration: BoxDecoration(
+      //       color: Color.fromARGB(255, 1, 28, 75),
+      //       borderRadius: BorderRadius.circular(30.0),
+      //     ),
+      //   ),
+      // ),
+      ElevatedButton(
+        onPressed: () {},
+        child: Text(
+          "Login",
+          style: TextStyle(color: Colors.white),
+          textAlign: TextAlign.center,
+        ),
+      ),
+    ],
+  );
 }
