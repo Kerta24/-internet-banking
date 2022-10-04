@@ -49,6 +49,25 @@ class _LoginScreen extends State<LoginScreen> {
                     children: [
                       _TextField(),
                       _LoginButton(context),
+                      Padding(padding: EdgeInsets.only(top: 20)),
+                      Container(
+                        child: Center(
+                            child: Row(
+                          children: [
+                            Container(
+                              padding: EdgeInsets.only(bottom: 0, right: 100),
+                              alignment: Alignment.centerLeft,
+                              child: Text("Daftar Mbanking"),
+                            ),
+                            Container(
+                              padding:
+                                  EdgeInsets.only(top: 0, bottom: 0, left: 100),
+                              alignment: Alignment.centerRight,
+                              child: Text("Lupa Passwrd?"),
+                            ),
+                          ],
+                        )),
+                      )
                     ],
                   ),
                 )
@@ -56,6 +75,17 @@ class _LoginScreen extends State<LoginScreen> {
             ),
           ),
         ),
+        bottomNavigationBar: BottomAppBar(
+            child: Container(
+                color: Color.fromARGB(255, 92, 92, 92),
+                height: 20.0,
+                child: Column(
+                  children: [
+                    Center(
+                      child: Text("Copyright @2022 by Kerta"),
+                    )
+                  ],
+                ))),
       ),
     );
   }
