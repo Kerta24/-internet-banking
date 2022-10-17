@@ -18,7 +18,7 @@ class _Dashboard extends State<Dashboard> {
       home: Scaffold(
         appBar: AppBar(
           actions: [
-            // IconButton(onPressed: (null), icon: (null) )
+            IconButton(onPressed: (null), icon: Icon(Icons.logout_rounded))
           ],
           backgroundColor: Color.fromARGB(255, 19, 1, 99),
           title: Center(
@@ -48,29 +48,28 @@ class _Dashboard extends State<Dashboard> {
                     //     ))
 
                     Container(
+                      // height: 200,
                       decoration: BoxDecoration(
                           color: Color.fromRGBO(33, 149, 243, 0.315)),
                       child: Row(
                         children: [
                           Expanded(
-                            child: Container(
-                              child: Column(
-                                children: [
-                                  Container(
-                                      padding: EdgeInsets.only(left: 10),
-                                      child: Text("Butuh Bantuan?")),
-                                  SizedBox(
-                                    width: 5,
-                                  ),
-                                  Container(
+                            child: Column(
+                              children: [
+                                Container(
                                     padding: EdgeInsets.only(left: 10),
-                                    child: Text(
-                                      "0878-1234-1024",
-                                      style: TextStyle(fontSize: 50),
-                                    ),
+                                    child: Text("Butuh Bantuan?")),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Container(
+                                  padding: EdgeInsets.only(left: 10),
+                                  child: Text(
+                                    "0878-1234-1024",
+                                    style: TextStyle(fontSize: 50),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
                           ),
                           Container(
@@ -81,22 +80,43 @@ class _Dashboard extends State<Dashboard> {
                           )
                         ],
                       ),
+                    ),
+                    SizedBox(
+                      height: 40,
                     )
                   ],
                 )),
           ),
         ),
-        bottomNavigationBar: BottomAppBar(
-            child: Container(
-                color: Color.fromARGB(255, 92, 92, 92),
-                height: 20.0,
-                child: Column(
-                  children: [
-                    Center(
-                      child: Text("Copyright @2022 by Kerta"),
-                    )
-                  ],
-                ))),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {},
+          backgroundColor: Color.fromARGB(255, 3, 5, 112),
+          child: Icon(Icons.qr_code),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: Color.fromARGB(255, 241, 241, 241),
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.settings,
+                  color: Color.fromARGB(255, 3, 4, 105),
+                ),
+                label: 'Setting',
+              ),
+
+              // BottomNavigationBarItem(
+              //     icon: Icon(
+              //       Icons.qr_code,
+              //       color: Colors.blue,
+              //     ),
+              //     label: '',
+              //     backgroundColor: Color.fromARGB(255, 5, 3, 156)),
+              BottomNavigationBarItem(
+                  icon:
+                      Icon(Icons.person, color: Color.fromARGB(255, 3, 4, 105)),
+                  label: 'Profile')
+            ]),
       ),
     );
   }
