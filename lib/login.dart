@@ -10,7 +10,7 @@ final myPasswordController = TextEditingController();
 String nUsername = "Kerta Hendrawan", nPassword = "12345678";
 final _formKey = GlobalKey<FormState>();
 
-class LoginScreen extends StatefulWidget {
+class LoginScreen extends StatelessWidget {
   // final myUsernameController = TextEditingController();
   // final myPasswordController = TextEditingController();
   // String nUsername, nPassword;
@@ -18,98 +18,188 @@ class LoginScreen extends StatefulWidget {
   // final _formKey = GlobalKey<FormState>();
 
   @override
-  _LoginScreen createState() => _LoginScreen();
-}
-
-class _LoginScreen extends State<LoginScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
+  // _LoginScreen createState() => _LoginScreen();
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-        body: SingleChildScrollView(
-          child: SafeArea(
-            child: Container(
-              child: Column(
-                children: [
-                  SizedBox(
-                    width: 30,
-                  ),
-                  Container(
-                    padding: EdgeInsets.fromLTRB(0, 40, 0, 20),
-                    width: 200,
-                    child: Image.asset("assets/images/UNDIKSHA.png"),
-                  ),
-                  SizedBox(
-                    width: 300,
-                  ),
-                  Container(
-                    margin: EdgeInsets.all(4),
-                    padding: EdgeInsets.all(30.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                      color: Color.fromARGB(255, 247, 247, 247),
-                      border: Border.all(color: Colors.black, width: 2.0),
-                    ),
-                    child: Column(
-                      children: [
-                        _TextField(),
-                        MaterialButton(
-                          minWidth: 85.0,
-                          height: 50.0,
-                          color: Color.fromARGB(255, 10, 1, 134),
-                          textColor: Colors.white,
-                          onPressed: () {
-                            //cek apakah username = Kerta
-                            //cek apakah password = 12345678
+      debugShowCheckedModeBanner: false,
+      home: _LoginScreen(),
+    );
+  }
+}
 
-                            if (_formKey.currentState!.validate()) {
-                              if (nUsername != myUsernameController.text) {
-                                print("Username Salah");
-                              } else if (nPassword !=
-                                  myPasswordController.text) {
-                                print("Password Salah");
-                              } else {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => Dashboard()));
-                              }
-                            }
-                          },
-                          child: SizedBox(
-                            width: 50,
-                            child: Text(
-                              "Login",
-                              style: TextStyle(color: Colors.white),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
+class _LoginScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final mediaQueryHeight = MediaQuery.of(context).size.height;
+    final mediaQueryWidth = MediaQuery.of(context).size.width;
+
+    final bool isLansCape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+    return MaterialApp(
+      home: Scaffold(
+        body: SafeArea(
+          child: Center(
+            //Jika Landscape
+            child: (isLansCape)
+                ? Column(
+                    children: [
+                      SizedBox(
+                        width: 30,
+                      ),
+                      Container(
+                        // padding: EdgeInsets.fromLTRB(0, 40, 0, 20),
+                        width: mediaQueryWidth * 0.3,
+                        height: mediaQueryHeight * 0.3,
+                        child: Image.asset("assets/images/UNDIKSHA.png"),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        margin: EdgeInsets.all(4),
+                        padding: EdgeInsets.all(30.0),
+                        // width: mediaQueryWidth * 0.8,
+                        // height: mediaQueryHeight * 0.6,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                          color: Color.fromARGB(255, 247, 247, 247),
+                          border: Border.all(color: Colors.black, width: 2.0),
                         ),
-                        // _LoginButton(context),
-                        Padding(padding: EdgeInsets.only(top: 20)),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        child: Column(
                           children: [
-                            TextButton(
-                                onPressed: (null),
+                            _TextField(),
+                            MaterialButton(
+                              minWidth: 85.0,
+                              height: 50.0,
+                              color: Color.fromARGB(255, 10, 1, 134),
+                              textColor: Colors.white,
+                              onPressed: () {
+                                //cek apakah username = Kerta
+                                //cek apakah password = 12345678
+
+                                if (_formKey.currentState!.validate()) {
+                                  if (nUsername != myUsernameController.text) {
+                                    print("Username Salah");
+                                  } else if (nPassword !=
+                                      myPasswordController.text) {
+                                    print("Password Salah");
+                                  } else {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Dashboard()));
+                                  }
+                                }
+                              },
+                              child: SizedBox(
+                                width: 50,
                                 child: Text(
-                                  "Daftar",
-                                )),
-                            TextButton(
-                                onPressed: (null), child: Text("Lupa Pasword"))
+                                  "Login",
+                                  style: TextStyle(color: Colors.white),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                            // _LoginButton(context),
+                            Padding(padding: EdgeInsets.only(top: 20)),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                TextButton(
+                                    onPressed: (null),
+                                    child: Text(
+                                      "Daftar",
+                                    )),
+                                TextButton(
+                                    onPressed: (null),
+                                    child: Text("Lupa Pasword"))
+                              ],
+                            )
                           ],
-                        )
-                      ],
-                    ),
+                        ),
+                      )
+                    ],
                   )
-                ],
-              ),
-            ),
+                // Jika Potrait
+                : Column(
+                    children: [
+                      SizedBox(
+                        width: 30,
+                      ),
+                      Container(
+                        // padding: EdgeInsets.fromLTRB(0, 40, 0, 20),
+                        width: mediaQueryWidth * 0.3,
+                        height: mediaQueryHeight * 0.3,
+                        child: Image.asset("assets/images/UNDIKSHA.png"),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        // margin: EdgeInsets.all(4),
+                        padding: EdgeInsets.all(30.0),
+                        width: mediaQueryWidth * 0.8,
+                        height: mediaQueryHeight * 0.6,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                          color: Color.fromARGB(255, 247, 247, 247),
+                          border: Border.all(color: Colors.black, width: 2.0),
+                        ),
+                        child: Column(
+                          children: [
+                            _TextField(),
+                            MaterialButton(
+                              minWidth: 85.0,
+                              height: 50.0,
+                              color: Color.fromARGB(255, 10, 1, 134),
+                              textColor: Colors.white,
+                              onPressed: () {
+                                //cek apakah username = Kerta
+                                //cek apakah password = 12345678
+
+                                if (_formKey.currentState!.validate()) {
+                                  if (nUsername != myUsernameController.text) {
+                                    print("Username Salah");
+                                  } else if (nPassword !=
+                                      myPasswordController.text) {
+                                    print("Password Salah");
+                                  } else {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Dashboard()));
+                                  }
+                                }
+                              },
+                              child: SizedBox(
+                                width: 50,
+                                child: Text(
+                                  "Login",
+                                  style: TextStyle(color: Colors.white),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                            // _LoginButton(context),
+                            Padding(padding: EdgeInsets.only(top: 20)),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                TextButton(
+                                    onPressed: (null),
+                                    child: Text(
+                                      "Daftar",
+                                    )),
+                                TextButton(
+                                    onPressed: (null),
+                                    child: Text("Lupa Pasword"))
+                              ],
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
           ),
         ),
         bottomNavigationBar: BottomAppBar(
