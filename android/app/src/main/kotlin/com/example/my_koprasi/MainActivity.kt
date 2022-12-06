@@ -1,4 +1,4 @@
-package com.example.aplikasi1
+package com.example.my_koprasi
 
 import io.flutter.embedding.android.FlutterActivity
 

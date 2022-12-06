@@ -1,6 +1,6 @@
 {
-    "name": "aplikasi1",
-    "short_name": "aplikasi1",
+    "name": "my_koprasi",
+    "short_name": "my_koprasi",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

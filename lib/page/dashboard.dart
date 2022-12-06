@@ -1,29 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:aplikasi1/login.dart';
+import 'package:my_koprasi/page/qrcode/qrcode.dart';
+
 
 class Dashboard extends StatefulWidget {
+  const Dashboard();
+
   @override
-  _Dashboard createState() => _Dashboard();
+  State<Dashboard> createState() => _DashboardState();
 }
 
-class _Dashboard extends State<Dashboard> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
+class _DashboardState extends State<Dashboard> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           actions: [
-            IconButton(onPressed: (null), icon: Icon(Icons.logout_rounded))
+            IconButton(onPressed: (null), icon: Icon(Icons.logout_rounded, color: Colors.white))
           ],
           backgroundColor: Color.fromARGB(255, 19, 1, 99),
           title: Center(
               child: Text(
-            "Dashboard Kooprasi Undiksha",
+            "Kooprasi Undiksha",
             style: TextStyle(
               fontSize: 24,
               color: Colors.white,
@@ -32,64 +30,38 @@ class _Dashboard extends State<Dashboard> {
             ),
           )),
         ),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Container(
-                alignment: AlignmentDirectional.center,
-                child: Column(
-                  children: <Widget>[
-                    _Profil(),
-                    _Fitur(),
-                    // Container(
-                    //     padding: EdgeInsets.all(10.0),
-                    //     child: GridView.count(
-                    //       crossAxisCount: 3,
-                    //       children: [],
-                    //     ))
-
-                    Container(
-                      // height: 200,
-                      decoration: BoxDecoration(
-                          color: Color.fromRGBO(33, 149, 243, 0.315)),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Column(
-                              children: [
-                                Container(
-                                    padding: EdgeInsets.only(left: 10),
-                                    child: Text("Butuh Bantuan?")),
-                                SizedBox(
-                                  width: 5,
-                                ),
-                                Container(
-                                  padding: EdgeInsets.only(left: 10),
-                                  child: Text(
-                                    "0878-1234-1024",
-                                    style: TextStyle(fontSize: 50),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            child: Icon(
-                              Icons.phone,
-                              size: 100,
-                            ),
-                          )
-                        ],
-                      ),
+        body: SafeArea(child: SingleChildScrollView(
+          child: Container(
+            alignment: AlignmentDirectional.center,
+            child: Column(
+              children: [
+                  _Profil(),
+                  Container(
+                    margin: EdgeInsets.fromLTRB(15, 0, 15, 15),
+                    // padding: EdgeInsetsDirectional.all(0),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.black, width: 2.0),
+                      borderRadius: BorderRadius.all(Radius.circular(5.0)),
                     ),
-                    SizedBox(
-                      height: 40,
-                    )
-                  ],
-                )),
+                    height: 400,
+                    child: Fitur(),
+                  ),
+                  Telephone(),
+                  // Fitur(),
+              ],
+            ),
           ),
         ),
+        
+        ),
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          
+          onPressed: () {
+            Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                      builder: (context) => qrcode()));
+          },
           backgroundColor: Color.fromARGB(255, 3, 5, 112),
           child: Icon(Icons.qr_code),
         ),
@@ -117,7 +89,7 @@ class _Dashboard extends State<Dashboard> {
                       Icon(Icons.person, color: Color.fromARGB(255, 3, 4, 105)),
                   label: 'Profile')
             ]),
-      ),
+      )
     );
   }
 }
@@ -233,93 +205,82 @@ Widget _Profil() {
   );
 }
 
-Widget _Fitur() {
-  return Container(
-    margin: EdgeInsets.all(15.0),
-    padding: EdgeInsets.all(5.0),
-    decoration: BoxDecoration(
-      borderRadius: BorderRadius.all(Radius.circular(5.0)),
-      color: Color.fromARGB(255, 247, 247, 247),
-      border: Border.all(color: Colors.black, width: 2.0),
-    ),
-    child: Column(
-      children: [
-        Row(
-          children: [
-            _fiturChard(title: "Cek Saldo", icon: Icons.home),
-            SizedBox(
-              width: 40,
-            ),
-            _fiturChard(title: "Cek Saldo", icon: Icons.home),
-            SizedBox(
-              width: 40,
-            ),
-            _fiturChard(title: "Cek Saldo", icon: Icons.home),
-          ],
+//Widget FItur
+class Fitur extends StatelessWidget {
+  // const Fitur({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        body: Container(
+          child: GridView.count(
+        // primary: false,
+        padding: const EdgeInsets.all(10.0),
+        crossAxisSpacing: 10.0,
+        mainAxisSpacing: 10.0,
+        crossAxisCount: 3,
+        children: <Widget> [
+          _fiturChard(title: "Cek Saldo", icon: Icons.attach_money_outlined, warna: Color.fromARGB(255, 9, 23, 153)),
+          _fiturChard(title: "Transfer", icon: Icons.money_rounded, warna: Color.fromARGB(255, 9, 23, 153)),
+          _fiturChard(title: "Deposito", icon: Icons.money_off_csred_rounded, warna: Color.fromARGB(255, 9, 23, 153)),
+          _fiturChard(title: "Pembayaran", icon: Icons.payment, warna: Color.fromARGB(255, 9, 23, 153)),
+          _fiturChard(title: "Pinjaman", icon: Icons.payments_rounded, warna: Color.fromARGB(255, 9, 23, 153)),
+          _fiturChard(title: "Mutasi", icon: Icons.grid_off_sharp, warna: Color.fromARGB(255, 9, 23, 153)),
+        ],
+          ),
         ),
-        SizedBox(
-          height: 40,
-        ),
-        Row(
-          children: [
-            _fiturChard(title: "Cek Saldo", icon: Icons.home),
-            SizedBox(
-              width: 40,
-            ),
-            _fiturChard(title: "Cek Saldo", icon: Icons.home),
-            SizedBox(
-              width: 40,
-            ),
-            _fiturChard(title: "Cek Saldo", icon: Icons.home),
-          ],
-        )
-      ],
-    ),
-    // child: GridView.count(
-    //   crossAxisCount: 3,
-    //   children: [
-    //     _fiturChard(title: "Cek Saldo", icon: Icons.home),
-    //     _fiturChard(title: "Cek Saldo", icon: Icons.home),
-    //     _fiturChard(title: "Cek Saldo", icon: Icons.home),
-    //     _fiturChard(title: "Cek Saldo", icon: Icons.home),
-    //   ],
-  );
+      )
+    );
+    //g;
+  }
 }
 
+//Fungction Chart
 class _fiturChard extends StatelessWidget {
-  _fiturChard({required this.title, required this.icon});
+  _fiturChard({required this.title, required this.icon, required this.warna});
 
   String title;
   IconData icon;
+  Color warna;
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 200,
+      height: 200,
+      decoration: BoxDecoration(
+      // color: Colors.blue
+      ),
       // padding: EdgeInsets.only(top: 10),
       child: Card(
           //menambahkan bayangan
           elevation: 5,
+          color: Color.fromARGB(255, 218, 216, 216),
           child: Container(
             child: Center(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
+
                   Container(
-                      width: 115,
-                      height: 100,
+                    padding: EdgeInsets.only(top: 10),
+                      // width: 100,
+                      // height: 100,
+                      
                       child: Icon(
                         icon,
-                        size: 100,
+                        size: 50,
+                        color: warna,
+          
                       )),
-                  SizedBox(
-                    height: 10,
-                  ),
+                  // SizedBox(
+                  //   height: 5,
+                  // ),
                   Text(
                     title,
                   ),
-                  SizedBox(
-                    height: 10,
-                  )
+                  
                 ],
               ),
             ),
@@ -327,3 +288,42 @@ class _fiturChard extends StatelessWidget {
     );
   }
 }
+
+Widget Telephone() {
+  return Container(
+                      // height: 200,
+                      decoration: BoxDecoration(
+                          color: Color.fromRGBO(33, 149, 243, 0.315)),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Container(
+                                    padding: EdgeInsets.only(left: 10),
+                                    child: Text("Butuh Bantuan?")),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Container(
+                                  padding: EdgeInsets.only(left: 10),
+                                  child: Text(
+                                    "0878-1234-1024",
+                                    style: TextStyle(fontSize: 30),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                            child: Icon(
+                              Icons.phone,
+                              size: 100,
+                            ),
+                          )
+                        ],
+                      ),
+                    );
+}
+
