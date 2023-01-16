@@ -76,14 +76,6 @@ class _DashboardState extends State<Dashboard> {
                 ),
                 label: 'Setting',
               ),
-
-              // BottomNavigationBarItem(
-              //     icon: Icon(
-              //       Icons.qr_code,
-              //       color: Colors.blue,
-              //     ),
-              //     label: '',
-              //     backgroundColor: Color.fromARGB(255, 5, 3, 156)),
               BottomNavigationBarItem(
                   icon:
                       Icon(Icons.person, color: Color.fromARGB(255, 3, 4, 105)),
@@ -223,10 +215,10 @@ class Fitur extends StatelessWidget {
         children: <Widget> [
           _fiturChard(title: "Cek Saldo", icon: Icons.attach_money_outlined, warna: Color.fromARGB(255, 9, 23, 153)),
           _fiturChard(title: "Transfer", icon: Icons.money_rounded, warna: Color.fromARGB(255, 9, 23, 153)),
-          _fiturChard(title: "Deposito", icon: Icons.money_off_csred_rounded, warna: Color.fromARGB(255, 9, 23, 153)),
-          _fiturChard(title: "Pembayaran", icon: Icons.payment, warna: Color.fromARGB(255, 9, 23, 153)),
-          _fiturChard(title: "Pinjaman", icon: Icons.payments_rounded, warna: Color.fromARGB(255, 9, 23, 153)),
-          _fiturChard(title: "Mutasi", icon: Icons.grid_off_sharp, warna: Color.fromARGB(255, 9, 23, 153)),
+          // _fiturChard(title: "Deposito", icon: Icons.money_off_csred_rounded, warna: Color.fromARGB(255, 9, 23, 153)),
+          _fiturChard(title: "Tarik", icon: Icons.payment, warna: Color.fromARGB(255, 9, 23, 153)),
+          _fiturChard(title: "Setor", icon: Icons.payments_rounded, warna: Color.fromARGB(255, 9, 23, 153)),
+          // _fiturChard(title: "Mutasi", icon: Icons.grid_off_sharp, warna: Color.fromARGB(255, 9, 23, 153)),
         ],
           ),
         ),

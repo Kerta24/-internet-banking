@@ -1,17 +1,19 @@
 // import 'dart:js';
 
+import 'package:my_koprasi/model/list_user_model.dart';
+import 'package:my_koprasi/page/loginregister/register.dart';
 import 'package:path/path.dart' as Path;
 import 'package:my_koprasi/page/dashboard.dart';
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:my_koprasi/services/list_users_service.dart';
+import 'package:my_koprasi/services/list_users_service.dart';
 // import 'package:my_koprasi/model/list_user_model.dart';
-import 'package:my_koprasi/services/login_service.dart';
 
 final myUsernameController = TextEditingController();
 final myPasswordController = TextEditingController();
-// final loginServices = Auth().postLogin;
 
+final _services = ListUserService();
+// final loginServices = Auth().postLogin;
 
 
 String nUsername = "Kerta", nPassword = "12345678";
@@ -83,23 +85,27 @@ class _LoginScreen extends StatelessWidget {
                                 height: 50.0,
                                 color: Color.fromARGB(255, 10, 1, 134),
                                 textColor: Colors.white,
-                                onPressed: () {
-                                  //cek apakah username = Kerta
-                                  //cek apakah password = 12345678
-          
-                                  if (_formKey.currentState!.validate()) {
-                                    if (nUsername != myUsernameController.text) {
-                                      print("Username Salah");
-                                    } else if (nPassword !=
-                                        myPasswordController.text) {
-                                      print("Password Salah");
-                                    } else {
+                                onPressed: () async {
+
+                                  Future<ListUsersModel?> result = _services.loginUsers(
+                                    
+                                    email: myUsernameController.text,
+                                    password: myPasswordController.text,
+                                  );
+
+                                  result.then((value) {
+                                    if (value != null) {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) => Dashboard()));
+                                    } else {
+                                      print("Username atau Password Salah");
                                     }
-                                  }
+                                  });
+                                  
+
+                                  
                                 },
                                 child: SizedBox(
                                   width: 50,
@@ -116,7 +122,14 @@ class _LoginScreen extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   TextButton(
-                                      onPressed: (null),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    register()));
+                                      },
+                                    
                                       child: Text(
                                         "Daftar",
                                       )),
@@ -130,7 +143,7 @@ class _LoginScreen extends StatelessWidget {
                         )
                       ],
                     )
- // Jika Potrait
+ // ----------------------------------------------------------Jika Potrait
                   : Column(
                       children: [
                         SizedBox(
@@ -164,29 +177,27 @@ class _LoginScreen extends StatelessWidget {
                                 height: 50.0,
                                 color: Color.fromARGB(255, 10, 1, 134),
                                 textColor: Colors.white,
-                                onPressed: () {
-                                  //cek apakah username = Kerta
-                                  //cek apakah password = 12345678
-          
-                                  if (_formKey.currentState!.validate()) {
+                                onPressed: () async {
 
-                                    // loginServices(myUsernameController.text, myPasswordController.text);
-                                    // Navigator.push(
-                                    //       context,
-                                    //       MaterialPageRoute(
-                                    //           builder: (context) => Dashboard()));
+                                  Future<ListUsersModel?> result = _services.loginUsers(
+                                    
+                                    email: myUsernameController.text,
+                                    password: myPasswordController.text,
+                                  );
 
-                                    if (nUsername != myUsernameController.text) {
-                                      print("Username Salah");
-                                    } else if (nPassword!= myPasswordController.text) {
-                                      print("Password Salah");
-                                    } else {
+                                  result.then((value) {
+                                    if (value != null) {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) => Dashboard()));
+                                    } else {
+                                      print("Username atau Password Salah");
                                     }
-                                  }
+                                  });
+                                  
+
+                                  
                                 },
                                 child: SizedBox(
                                   width: 50,
@@ -203,7 +214,13 @@ class _LoginScreen extends StatelessWidget {
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
                                   TextButton(
-                                      onPressed: (null),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    register()));
+                                      },
                                       child: Text(
                                         "Daftar",
                                       )),
@@ -260,9 +277,6 @@ Widget _TextField() {
               label: Text("Username"),
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(4.0))),
-              // label: Text("Username"),
-              // labelText: "Username",
-              // hintText: "Masukan Username",
               hintStyle: TextStyle(color: Colors.black)),
           style: TextStyle(color: Colors.black),
           autofocus: false,
@@ -284,9 +298,6 @@ Widget _TextField() {
               label: Text("Password"),
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(4.0))),
-              // label: Text("Username"),
-              // labelText: "Username",
-              // hintText: "Masukan Username",
               hintStyle: TextStyle(color: Colors.black)),
           style: TextStyle(color: Colors.black),
           autofocus: false,
@@ -299,37 +310,3 @@ Widget _TextField() {
     ),
   );
 }
-
-// Widget _LoginButton(BuildContext context) {
-//   return Column(
-//     children: <Widget>[
-//       Padding(padding: EdgeInsets.only(top: 16, bottom: 20)),
-//       // InkWell(
-//       //   child: Container(
-//       //     padding: EdgeInsets.symmetric(vertical: 8.0),
-//       //     width: 200,
-//       //     child: Text(
-//       //       "Login",
-//       //       style: TextStyle(color: Colors.white),
-//       //       textAlign: TextAlign.center,
-//       //     ),
-//       //     decoration: BoxDecoration(
-//       //       color: Color.fromARGB(255, 1, 28, 75),
-//       //       borderRadius: BorderRadius.circular(30.0),
-//       //     ),
-//       //   ),
-//       // ),
-      // ElevatedButton(
-      //   onPressed: () {},
-      //   child: SizedBox(
-      //     width: 50,
-      //     child: Text(
-      //       "Login",
-      //       style: TextStyle(color: Colors.white),
-      //       textAlign: TextAlign.center,
-      //     ),
-      //   ),
-      // ),
-//     ],
-//   );
-// }
