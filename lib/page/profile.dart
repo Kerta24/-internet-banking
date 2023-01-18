@@ -89,7 +89,7 @@ class _ProfileState extends State<Profile> {
             SizedBox(height: 10),
             Container(
               margin: EdgeInsets.only(top: 10),
-              child: Text('Nama: '),
+              child: Text('Nama: ${nama!}'),
             ),
             SizedBox(height: 10),
             Container(
