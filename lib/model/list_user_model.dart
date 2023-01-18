@@ -1,31 +1,39 @@
-class  ListUsersModel {
-     ListUsersModel({
-        this.id,
-        this.email,
-        this.firstName,
-        this.lastName,
-        this.avatar,
-    });
+class UserModel {
+  final String userId;
+  final String username; // email
+  final String nama;
+  late double saldo;
+  final String password;
+  final String nomorRekening;
 
-    int? id;
-    String? email;
-    String? firstName;
-    String? lastName;
-    String? avatar;
+  UserModel({
+    required this.userId,
+    required this.username,
+    required this.nama,
+    required this.saldo,
+    required this.password,
+    required this.nomorRekening,
+  });
 
-    factory  ListUsersModel.fromJson(Map<String, dynamic> json) =>  ListUsersModel(
-        id: json["id"],
-        email: json["email"],
-        firstName: json["first_name"],
-        lastName: json["last_name"],
-        avatar: json["avatar"],
+  factory UserModel.fromJson(Map<String, dynamic> json) {
+    return UserModel(
+      userId: json['user_id'],
+      username: json['username'],
+      nama: json['nama'],
+      saldo: double.parse(json['saldo']),
+      password: json['password'],
+      nomorRekening: json['nomor_rekening'],
     );
+  }
 
-    Map<String, dynamic> toJson() => {
-        "id": id,
-        "email": email,
-        "first_name": firstName,
-        "last_name": lastName,
-        "avatar": avatar,
+  Map<String, dynamic> toJson() {
+    return {
+      'user_id': userId,
+      'username': username,
+      'nama': nama,
+      'saldo': saldo,
+      'password': password,
+      'nomor_rekening': nomorRekening,
     };
+  }
 }

@@ -1,20 +1,22 @@
 // import 'dart:js';
 
+import 'package:my_koprasi/model/list_user_model.dart';
+import 'package:my_koprasi/page/loginregister/register.dart';
 import 'package:path/path.dart' as Path;
 import 'package:my_koprasi/page/dashboard.dart';
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-// import 'package:my_koprasi/services/list_users_service.dart';
+import 'package:my_koprasi/services/list_users_service.dart';
 // import 'package:my_koprasi/model/list_user_model.dart';
-import 'package:my_koprasi/services/login_service.dart';
+// import 'package:my_koprasi/references/user_references.dart';
 
 final myUsernameController = TextEditingController();
 final myPasswordController = TextEditingController();
+
+final _services = UsersServices();
 // final loginServices = Auth().postLogin;
+// final _references = UserReferences();
 
-
-
-String nUsername = "Kerta", nPassword = "12345678";
 final _formKey = GlobalKey<FormState>();
 
 class LoginScreen extends StatefulWidget {
@@ -23,7 +25,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   // final myUsernameController = TextEditingController();
   @override
   // _LoginScreen createState() => _LoginScreen();
@@ -49,7 +50,7 @@ class _LoginScreen extends StatelessWidget {
         body: SafeArea(
           child: SingleChildScrollView(
             child: Center(
- //Jika Landscape
+              //Jika Landscape
               child: (isLansCape)
                   ? Column(
                       children: [
@@ -71,7 +72,8 @@ class _LoginScreen extends StatelessWidget {
                           // width: mediaQueryWidth * 0.8,
                           // height: mediaQueryHeight * 0.6,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8.0)),
                             color: Color.fromARGB(255, 247, 247, 247),
                             border: Border.all(color: Colors.black, width: 2.0),
                           ),
@@ -83,23 +85,24 @@ class _LoginScreen extends StatelessWidget {
                                 height: 50.0,
                                 color: Color.fromARGB(255, 10, 1, 134),
                                 textColor: Colors.white,
-                                onPressed: () {
-                                  //cek apakah username = Kerta
-                                  //cek apakah password = 12345678
-          
-                                  if (_formKey.currentState!.validate()) {
-                                    if (nUsername != myUsernameController.text) {
-                                      print("Username Salah");
-                                    } else if (nPassword !=
-                                        myPasswordController.text) {
-                                      print("Password Salah");
-                                    } else {
+                                onPressed: () async {
+                                  Future<UsersServices?> result =
+                                      await _services.loginUser(
+                                    username: myUsernameController.text,
+                                    password: myPasswordController.text,
+                                  ) as Future<UsersServices?>;
+
+                                  result.then((value) {
+                                    if (value != null) {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => Dashboard()));
+                                              builder: (context) =>
+                                                  Dashboard()));
+                                    } else {
+                                      print("Username atau Password Salah");
                                     }
-                                  }
+                                  });
                                 },
                                 child: SizedBox(
                                   width: 50,
@@ -113,15 +116,29 @@ class _LoginScreen extends StatelessWidget {
                               // _LoginButton(context),
                               Padding(padding: EdgeInsets.only(top: 20)),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   TextButton(
-                                      onPressed: (null),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    register()));
+                                      },
                                       child: Text(
                                         "Daftar",
                                       )),
                                   TextButton(
-                                      onPressed: (null),
+                                      onPressed: () {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text('Comingsoon'),
+                                          ),
+                                        );
+                                      },
                                       child: Text("Lupa Pasword"))
                                 ],
                               )
@@ -130,7 +147,7 @@ class _LoginScreen extends StatelessWidget {
                         )
                       ],
                     )
- // Jika Potrait
+                  // ----------------------------------------------------------Jika Potrait
                   : Column(
                       children: [
                         SizedBox(
@@ -149,10 +166,10 @@ class _LoginScreen extends StatelessWidget {
                           // margin: EdgeInsets.all(4),
                           padding: EdgeInsets.all(20.0),
                           width: mediaQueryWidth * 0.8,
-                          height: 350.0
-                          ,
+                          height: 350.0,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8.0)),
                             color: Color.fromARGB(255, 247, 247, 247),
                             border: Border.all(color: Colors.black, width: 2.0),
                           ),
@@ -164,29 +181,24 @@ class _LoginScreen extends StatelessWidget {
                                 height: 50.0,
                                 color: Color.fromARGB(255, 10, 1, 134),
                                 textColor: Colors.white,
-                                onPressed: () {
-                                  //cek apakah username = Kerta
-                                  //cek apakah password = 12345678
-          
-                                  if (_formKey.currentState!.validate()) {
-
-                                    // loginServices(myUsernameController.text, myPasswordController.text);
-                                    // Navigator.push(
-                                    //       context,
-                                    //       MaterialPageRoute(
-                                    //           builder: (context) => Dashboard()));
-
-                                    if (nUsername != myUsernameController.text) {
-                                      print("Username Salah");
-                                    } else if (nPassword!= myPasswordController.text) {
-                                      print("Password Salah");
-                                    } else {
+                                onPressed: () async {
+                                  await _services
+                                      .loginUser(
+                                    username: myUsernameController.text,
+                                    password: myPasswordController.text,
+                                  )
+                                      .then((value) {
+                                    print(value);
+                                    if (value != null) {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => Dashboard()));
+                                              builder: (context) =>
+                                                  Dashboard()));
+                                    } else {
+                                      print("Username atau Password Salah");
                                     }
-                                  }
+                                  });
                                 },
                                 child: SizedBox(
                                   width: 50,
@@ -200,10 +212,17 @@ class _LoginScreen extends StatelessWidget {
                               // _LoginButton(context),
                               Padding(padding: EdgeInsets.only(top: 20)),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   TextButton(
-                                      onPressed: (null),
+                                      onPressed: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    register()));
+                                      },
                                       child: Text(
                                         "Daftar",
                                       )),
@@ -260,9 +279,6 @@ Widget _TextField() {
               label: Text("Username"),
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(4.0))),
-              // label: Text("Username"),
-              // labelText: "Username",
-              // hintText: "Masukan Username",
               hintStyle: TextStyle(color: Colors.black)),
           style: TextStyle(color: Colors.black),
           autofocus: false,
@@ -284,9 +300,6 @@ Widget _TextField() {
               label: Text("Password"),
               border: OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(4.0))),
-              // label: Text("Username"),
-              // labelText: "Username",
-              // hintText: "Masukan Username",
               hintStyle: TextStyle(color: Colors.black)),
           style: TextStyle(color: Colors.black),
           autofocus: false,
@@ -299,37 +312,3 @@ Widget _TextField() {
     ),
   );
 }
-
-// Widget _LoginButton(BuildContext context) {
-//   return Column(
-//     children: <Widget>[
-//       Padding(padding: EdgeInsets.only(top: 16, bottom: 20)),
-//       // InkWell(
-//       //   child: Container(
-//       //     padding: EdgeInsets.symmetric(vertical: 8.0),
-//       //     width: 200,
-//       //     child: Text(
-//       //       "Login",
-//       //       style: TextStyle(color: Colors.white),
-//       //       textAlign: TextAlign.center,
-//       //     ),
-//       //     decoration: BoxDecoration(
-//       //       color: Color.fromARGB(255, 1, 28, 75),
-//       //       borderRadius: BorderRadius.circular(30.0),
-//       //     ),
-//       //   ),
-//       // ),
-      // ElevatedButton(
-      //   onPressed: () {},
-      //   child: SizedBox(
-      //     width: 50,
-      //     child: Text(
-      //       "Login",
-      //       style: TextStyle(color: Colors.white),
-      //       textAlign: TextAlign.center,
-      //     ),
-      //   ),
-      // ),
-//     ],
-//   );
-// }

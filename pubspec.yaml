@@ -38,6 +38,8 @@ dependencies:
   flutter_barcode_scanner: ^2.0.0
   #Dio
   dio: ^4.0.6
+  shared_preferences: ^2.0.16
+  responsive_framework: ^0.1.9
 
 
 dev_dependencies:
