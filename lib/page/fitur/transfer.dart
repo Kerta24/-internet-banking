@@ -68,19 +68,21 @@ class _tranferState extends State<tranfer> {
                         nominal: _tranferController.text,
                         rekeningTujuan: _rekeningController.text)
                     .then((value) {
-                  SnackBar(
-                    content: const Text('Berhasil Transfer'),
-                    action: SnackBarAction(
-                      label: 'Kembali Ke Beranda',
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => Dashboard()));
-                      },
-                    ),
-                  );
-                  
+                 // final berhasil = SnackBar(
+                  //   content: const Text('Berhasil Transfer'),
+                  //   action: SnackBarAction(
+                  //     label: 'Kembali Ke Beranda',
+                  //     onPressed: () {
+                  //       Navigator.push(
+                  //           context,
+                  //           MaterialPageRoute(
+                  //               builder: (context) => Dashboard()));
+                  //     },
+                  //   ),
+                  // );
+                  // ScaffoldMessenger.of(context).showSnackBar(berhasil);
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Dashboard()));
                   print('Berhasil');
                 });
                 // }).onError((error, stackTrace) {
