@@ -4,7 +4,9 @@
 
 ## Getting Started
 
-Link Video Youtube https://youtu.be/TcL5yxB9o9o
+Link Video Youtube: https://youtu.be/TcL5yxB9o9o
+
+Link APK: https://drive.google.com/drive/folders/1TmN-2c98BfJaDkBMQR6qpqNbakMOvqSC?usp=share_link
 
 This project is a starting point for a Flutter application.
 
