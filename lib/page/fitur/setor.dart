@@ -72,7 +72,7 @@ void getRefrence() async {
                         MaterialPageRoute(builder: (context) => Dashboard()));
                   }
                 },onError: (error, stactrace){
-                  print('eror');
+                  print('Tidak dapat menyetor tunai');
                 });
 
               },

@@ -69,8 +69,21 @@ void getRefrence() async {
               onPressed: () async {
 
                 _services.tarikan(userId: id!, nominal: _tarikController.text).then((value) {
+                 // final berhasil = SnackBar(
+                  //   content: const Text('Berhasil Transfer'),
+                  //   action: SnackBarAction(
+                  //     label: 'Kembali Ke Beranda',
+                  //     onPressed: () {
+                  //       Navigator.push(
+                  //           context,
+                  //           MaterialPageRoute(
+                  //               builder: (context) => Dashboard()));
+                  //     },
+                  //   ),
+                  // );
+                  // ScaffoldMessenger.of(context).showSnackBar(berhasil);
                   Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => Dashboard()));
+                      MaterialPageRoute(builder: (context) => Dashboard()));
 
                 },onError: (error, stacktrace) {
                   print("gagal");
