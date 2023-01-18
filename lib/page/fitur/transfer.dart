@@ -2,21 +2,49 @@ import 'package:flutter/material.dart';
 import 'package:my_koprasi/page/dashboard.dart';
 import 'package:my_koprasi/page/fitur/tarik.dart';
 import 'package:my_koprasi/page/fitur/setor.dart';
+import 'package:my_koprasi/services/list_users_service.dart';
+import 'package:my_koprasi/references/user_references.dart';
 
-void main() {
-  runApp(MaterialApp(
-    home: tranfer(),
-  ));
+class tranfer extends StatefulWidget {
+  @override
+  State<tranfer> createState() => _tranferState();
 }
 
-class tranfer extends StatelessWidget {
-  const tranfer();
+class _tranferState extends State<tranfer> {
+  final _services = UsersServices();
+
+  final _references = UserReferences();
+
+  final _rekeningController = TextEditingController();
+
+  final _tranferController = TextEditingController();
+
+  String? id;
+
+  void getRefrence() async {
+    id = await _references.getUserId();
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getRefrence();
+  }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
         home: Scaffold(
       appBar: AppBar(
+        actions: [
+          IconButton(
+              onPressed: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => Dashboard()));
+              },
+              icon: Icon(Icons.home, color: Colors.white))
+        ],
         backgroundColor: Color.fromARGB(255, 10, 1, 134),
         title: Text('Transfer'),
       ),
@@ -33,7 +61,32 @@ class tranfer extends StatelessWidget {
                 primary: Color.fromARGB(255, 10, 1, 134),
                 onPrimary: Colors.white,
               ),
-              onPressed: () {},
+              onPressed: () async {
+                await _services
+                    .transfer(
+                        userId: id!,
+                        nominal: _tranferController.text,
+                        rekeningTujuan: _rekeningController.text)
+                    .then((value) {
+                  SnackBar(
+                    content: const Text('Berhasil Transfer'),
+                    action: SnackBarAction(
+                      label: 'Kembali Ke Beranda',
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => Dashboard()));
+                      },
+                    ),
+                  );
+                  
+                  print('Berhasil');
+                });
+                // }).onError((error, stackTrace) {
+                //   print('Tidak Berhasil');
+                // });
+              },
               child: Text('Transfer'),
             ),
 
@@ -42,20 +95,18 @@ class tranfer extends StatelessWidget {
               children: [
                 TextButton(
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Tarik()));
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Tarik()));
                     },
                     child: Text(
                       "Tarik Tunai",
                     )),
-                TextButton(onPressed: () {
-                   Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => Setor()));
-                }, child: Text("Setor Tunai"))
+                TextButton(
+                    onPressed: () {
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Setor()));
+                    },
+                    child: Text("Setor Tunai"))
               ],
             ),
           ],
@@ -70,6 +121,7 @@ class tranfer extends StatelessWidget {
       child: Column(
         children: [
           TextFormField(
+            controller: _rekeningController,
             decoration: InputDecoration(
               labelText: 'Nomor Rekening',
               hintText: 'Masukan Nomor Rekening',
@@ -82,6 +134,7 @@ class tranfer extends StatelessWidget {
             height: 10,
           ),
           TextFormField(
+            controller: _tranferController,
             decoration: InputDecoration(
               labelText: 'Jumlah Transfer',
               hintText: 'Masukan Jumlah Transfer',

@@ -8,15 +8,15 @@ import 'package:my_koprasi/page/dashboard.dart';
 import 'package:flutter/material.dart';
 import 'package:my_koprasi/services/list_users_service.dart';
 // import 'package:my_koprasi/model/list_user_model.dart';
+// import 'package:my_koprasi/references/user_references.dart';
 
 final myUsernameController = TextEditingController();
 final myPasswordController = TextEditingController();
 
-final _services = ListUserService();
+final _services = UsersServices();
 // final loginServices = Auth().postLogin;
+// final _references = UserReferences();
 
-
-String nUsername = "Kerta", nPassword = "12345678";
 final _formKey = GlobalKey<FormState>();
 
 class LoginScreen extends StatefulWidget {
@@ -25,7 +25,6 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
   // final myUsernameController = TextEditingController();
   @override
   // _LoginScreen createState() => _LoginScreen();
@@ -51,7 +50,7 @@ class _LoginScreen extends StatelessWidget {
         body: SafeArea(
           child: SingleChildScrollView(
             child: Center(
- //Jika Landscape
+              //Jika Landscape
               child: (isLansCape)
                   ? Column(
                       children: [
@@ -73,7 +72,8 @@ class _LoginScreen extends StatelessWidget {
                           // width: mediaQueryWidth * 0.8,
                           // height: mediaQueryHeight * 0.6,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8.0)),
                             color: Color.fromARGB(255, 247, 247, 247),
                             border: Border.all(color: Colors.black, width: 2.0),
                           ),
@@ -86,26 +86,23 @@ class _LoginScreen extends StatelessWidget {
                                 color: Color.fromARGB(255, 10, 1, 134),
                                 textColor: Colors.white,
                                 onPressed: () async {
-
-                                  Future<ListUsersModel?> result = _services.loginUsers(
-                                    
-                                    email: myUsernameController.text,
+                                  Future<UsersServices?> result =
+                                      await _services.loginUser(
+                                    username: myUsernameController.text,
                                     password: myPasswordController.text,
-                                  );
+                                  ) as Future<UsersServices?>;
 
                                   result.then((value) {
                                     if (value != null) {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => Dashboard()));
+                                              builder: (context) =>
+                                                  Dashboard()));
                                     } else {
                                       print("Username atau Password Salah");
                                     }
                                   });
-                                  
-
-                                  
                                 },
                                 child: SizedBox(
                                   width: 50,
@@ -119,7 +116,8 @@ class _LoginScreen extends StatelessWidget {
                               // _LoginButton(context),
                               Padding(padding: EdgeInsets.only(top: 20)),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   TextButton(
                                       onPressed: () {
@@ -129,12 +127,18 @@ class _LoginScreen extends StatelessWidget {
                                                 builder: (context) =>
                                                     register()));
                                       },
-                                    
                                       child: Text(
                                         "Daftar",
                                       )),
                                   TextButton(
-                                      onPressed: (null),
+                                      onPressed: () {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text('Comingsoon'),
+                                          ),
+                                        );
+                                      },
                                       child: Text("Lupa Pasword"))
                                 ],
                               )
@@ -143,7 +147,7 @@ class _LoginScreen extends StatelessWidget {
                         )
                       ],
                     )
- // ----------------------------------------------------------Jika Potrait
+                  // ----------------------------------------------------------Jika Potrait
                   : Column(
                       children: [
                         SizedBox(
@@ -162,10 +166,10 @@ class _LoginScreen extends StatelessWidget {
                           // margin: EdgeInsets.all(4),
                           padding: EdgeInsets.all(20.0),
                           width: mediaQueryWidth * 0.8,
-                          height: 350.0
-                          ,
+                          height: 350.0,
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.all(Radius.circular(8.0)),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(8.0)),
                             color: Color.fromARGB(255, 247, 247, 247),
                             border: Border.all(color: Colors.black, width: 2.0),
                           ),
@@ -178,26 +182,23 @@ class _LoginScreen extends StatelessWidget {
                                 color: Color.fromARGB(255, 10, 1, 134),
                                 textColor: Colors.white,
                                 onPressed: () async {
-
-                                  Future<ListUsersModel?> result = _services.loginUsers(
-                                    
-                                    email: myUsernameController.text,
+                                  await _services
+                                      .loginUser(
+                                    username: myUsernameController.text,
                                     password: myPasswordController.text,
-                                  );
-
-                                  result.then((value) {
+                                  )
+                                      .then((value) {
+                                    print(value);
                                     if (value != null) {
                                       Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => Dashboard()));
+                                              builder: (context) =>
+                                                  Dashboard()));
                                     } else {
                                       print("Username atau Password Salah");
                                     }
                                   });
-                                  
-
-                                  
                                 },
                                 child: SizedBox(
                                   width: 50,
@@ -211,7 +212,8 @@ class _LoginScreen extends StatelessWidget {
                               // _LoginButton(context),
                               Padding(padding: EdgeInsets.only(top: 20)),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   TextButton(
                                       onPressed: () {

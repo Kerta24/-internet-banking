@@ -1,172 +1,326 @@
-import "package:dio/dio.dart";
+import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:my_koprasi/model/list_user_model.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:my_koprasi/references/user_references.dart';
 
-class ListUserService {
-  // list users
-  Future<List<ListUsersModel>?> getDataUsers() async {
-    Dio dio = Dio();
-    String url = "http://apikoperasi.rey1024.com/users";
-    final Response response;
-    try {
-      response = await dio.get(
-        url,
-      );
-      if (response.statusCode == 200) {
-        var json = response.data;
-        if (json is Map && json.keys.contains('data')) {
-          var data = json['data'];
-          if (data is List) {
-            dynamic send = data
-                .map<ListUsersModel>((u) => ListUsersModel.fromJson(u))
-                .toList();
-            print(send);
-            return send;
-          }
-        }
-      }
-      return null;
-    } on DioError catch (error, stacktrace) {
-      print('Exception occured: $error stackTrace: $stacktrace');
-      throw Exception(error.response);
-    }
-  }
 
-  // login
-  Future<ListUsersModel?> loginUsers(
-      {required String password, required String email}) async {
+class UsersServices extends ChangeNotifier {
+  UserReferences userReferences = UserReferences();
+  ChangeNotifier changeNotifier = ChangeNotifier();
+
+  String baseUrl = 'http://apikoperasi.rey1024.com/';
+
+  // get single user dari api
+  Future<List<UserModel?>> getUser({required String userId}) async {
     Dio dio = Dio();
-    String url = "http://apikoperasi.rey1024.com";
+    String url = '${baseUrl}getsingleuser';
+
     final Response response;
 
     try {
       response = await dio.post(
         url,
-        data: {"username": email, "password": password},
+        data: {
+          "user_id": userId,
+        },
       );
 
+      // mengecek apakah berhasil dengan mengecek status code
       if (response.statusCode == 200) {
         var json = response.data;
+        var data = json;
 
-        if (!json.key.contains('data')) {
-          return null;
-        } else {
-          if (json['data'] is List) {
-            var data = json['data'];
+        if (data[0]['nama'] != null && data[0]['nama'] != '') {
+          if (data is List) {
+            List<UserModel> user =
+                data.map<UserModel>((u) => UserModel.fromJson(u)).toList();
 
-            
-            //shared pref untuk menyimpan data user
-            // Obtain shared preferences.
-            final prefs = await SharedPreferences.getInstance();
+            // print(user[0].nama);
+            notifyListeners();
 
-            // Save an String value to 'action' key.
-            await prefs.setString('nama', data[0]['nama']);
-            await prefs.setString('username', data[0]['username']);
-            await prefs.setString('saldo', data[0]['saldo']);
-            await prefs.setString('user_id', data[0]['user_id']);
-            
-
-
-            List<dynamic> dataList = (data as List).cast<dynamic>();
-
-            print(dataList);
-
-            double? balence = double.parse(dataList[0]['saldo1']);
-            int? id = int.parse(dataList[0]['user_id']);
-
-            ListUsersModel user = ListUsersModel(
-              userId: id,
-              username: dataList[0]['username'],
-              nama: dataList[0]['nama'],
-              saldo: balence,
-            );
             return user;
           }
+        } else {
+          return [null];
         }
       }
-      return null;
+      return [null];
     } on DioError catch (error, stacktrace) {
       print('Exception occured: $error stackTrace: $stacktrace');
       throw Exception(error.response);
     }
   }
 
-  // register
-  Future<ListUsersModel?> registerUsers(
-      {required String password,
-      required String name,
-      required String email}) async {
+  // get all user dari api
+  Future<List<UserModel?>> getAllUser() async {
     Dio dio = Dio();
-    String url = "http://apikoperasi.rey1024.com/register";
+    String url = '${baseUrl}users';
+
     final Response response;
 
     try {
-      response = await dio.post(
-        url,
-        data: {
-          "username": email,
-          "password": password,
-          "nama": name,
-        },
-      );
+      response = await dio.get(url);
 
+      // mengecek apakah berhasil dengan mengecek status code
       if (response.statusCode == 200) {
         var json = response.data;
         var data = json;
 
-        print(data['status']);
-        if (data['status'] != 'error') {
-          return null;
+        if (data[0]['nama'] != null && data[0]['nama'] != '') {
+          if (data is List) {
+            dynamic user =
+                data.map<UserModel>((u) => UserModel.fromJson(u)).toList();
+
+            // print(data);
+            notifyListeners();
+            return user;
+          }
         } else {
-          Future<ListUsersModel?> result =
-              loginUsers(password: password, email: email);
-          print(result);
-          return result;
+          return [null];
         }
       }
-      return null;
+      return [null];
     } on DioError catch (error, stacktrace) {
       print('Exception occured: $error stackTrace: $stacktrace');
       throw Exception(error.response);
     }
   }
 
-  // setoran
-  Future<ListUsersModel?> setoranUsers(
-      {required String password,
-      required String name,
-      required String email,
-      required double saldo}) async {
+  // login user
+  Future<List<UserModel?>> loginUser(
+      {required String username, required String password}) async {
     Dio dio = Dio();
-    String url = "http://apikoperasi.rey1024.com/setoran";
+    String url = baseUrl;
+
     final Response response;
 
     try {
       response = await dio.post(
         url,
         data: {
-          "username": email,
+          "username": username,
           "password": password,
-          "nama": name,
-          "saldo": saldo,
         },
       );
 
+      // mengecek apakah berhasil dengan mengecek status code
       if (response.statusCode == 200) {
         var json = response.data;
         var data = json;
 
-        print(data['status']);
-        if (data['status'] != 'error') {
-          return null;
+        if (data[0]['nama'] != null && data[0]['nama'] != '') {
+          if (data is List) {
+            dynamic user =
+                data.map<UserModel>((u) => UserModel.fromJson(u)).toList();
+
+            // simpan data user ke shared preferences
+            userReferences.setUserId(user[0].userId);
+            userReferences.setUserName(user[0].username);
+            userReferences.setNama(user[0].nama);
+            userReferences.setSaldo(user[0].saldo);
+            userReferences.setPassword(user[0].password);
+            userReferences.setNomorRekening(user[0].nomorRekening);
+
+            // print(data);
+
+            notifyListeners();
+            return user;
+          }
         } else {
-          Future<ListUsersModel?> result =
-              loginUsers(password: password, email: email);
-          print(result);
-          return result;
+          return [null];
         }
       }
-      return null;
+      return [null];
+    } on DioError catch (error, stacktrace) {
+      print('Exception occured: $error stackTrace: $stacktrace');
+      throw Exception(error.response);
+    }
+  }
+
+  // register user
+  Future<bool?> registerUser(
+      {required String username,
+      required String nim,
+      required String password,
+      required String nama}) async {
+    Dio dio = Dio();
+    String url = '${baseUrl}register';
+
+    final Response response;
+
+    try {
+      response = await dio.post(
+        url,
+        data: {
+          "username": username,
+          "password": password,
+          "nama": nama,
+          "nim": nim,
+        },
+      );
+
+      // mengecek apakah berhasil dengan mengecek status code
+      if (response.statusCode == 200) {
+        var json = response.data;
+        var data = json;
+
+        if (data['nama'] != null && data['nama'] != '') {
+          // UserModel user = UserModel.fromJson(data);
+
+          // simpan data user ke shared preferences
+          // userReferences.setUserId(user.userId);
+          // userReferences.setUserName(user.username);
+          // userReferences.setNama(user.nama);
+          // userReferences.setSaldo(user.saldo);
+          // userReferences.setNomorRekening(user.nomorRekening);
+
+          notifyListeners();
+          return true;
+        } else {
+          throw false;
+        }
+      }
+      throw false;
+    } on DioError catch (error, stacktrace) {
+      print('Exception occured: $error stackTrace: $stacktrace');
+      throw Exception(error.response);
+    }
+  }
+
+  // Setoran
+  Future<bool?> setoran(
+      {required String userId,
+      required String nominal}) async {
+    Dio dio = Dio();
+    String url = '${baseUrl}setoran';
+
+    final Response response;
+
+    try {
+      response = await dio.post(
+        url,
+        data: {
+          "user_id": userId,
+          "jumlah_setoran": nominal,
+        },
+      );
+
+      // mengecek apakah berhasil dengan mengecek status code
+      if (response.statusCode == 200) {
+        var json = response.data;
+        var data = json;
+
+        if (data['status'] != null && data['status'] == 'success') {
+          // UserModel user = UserModel.fromJson(data);
+
+          // simpan data user ke shared preferences
+          // userReferences.setUserId(user.userId);
+          // userReferences.setUserName(user.username);
+          // userReferences.setNama(user.nama);
+          // userReferences.setSaldo(user.saldo);
+          // userReferences.setNomorRekening(user.nomorRekening);
+
+          notifyListeners();
+          return true;
+        } else {
+          throw false;
+        }
+      }
+      throw false;
+    } on DioError catch (error, stacktrace) {
+      print('Exception occured: $error stackTrace: $stacktrace');
+      throw Exception(error.response);
+    }
+  }
+
+  //  tarikan
+  Future<bool?> tarikan(
+      {required String userId,
+      required String nominal}) async {
+    Dio dio = Dio();
+    String url = '${baseUrl}tarikan';
+
+    final Response response;
+
+    try {
+      response = await dio.post(
+        url,
+        data: {
+          "user_id": userId,
+          "jumlah_tarikan": nominal,
+        },
+      );
+
+      // mengecek apakah berhasil dengan mengecek status code
+      if (response.statusCode == 200) {
+        var json = response.data;
+        var data = json;
+
+        if (data['status'] != null && data['status'] == 'success') {
+          // UserModel user = UserModel.fromJson(data);
+
+          // simpan data user ke shared preferences
+          // userReferences.setUserId(user.userId);
+          // userReferences.setUserName(user.username);
+          // userReferences.setNama(user.nama);
+          // userReferences.setSaldo(user.saldo);
+          // userReferences.setNomorRekening(user.nomorRekening);
+
+          notifyListeners();
+          return true;
+        } else {
+          throw false;
+        }
+      }
+      throw false;
+    } on DioError catch (error, stacktrace) {
+      print('Exception occured: $error stackTrace: $stacktrace');
+      throw Exception(error.response);
+    }
+  }
+
+  //  transfer
+  Future<bool?> transfer(
+      {required String userId,
+      required String nominal,
+      required String rekeningTujuan}) async {
+    Dio dio = Dio();
+    String url = '${baseUrl}transfer';
+
+    final Response response;
+
+    try {
+      response = await dio.post(
+        url,
+        data: {
+          "id_pengirim": userId,
+          "jumlah_transfer": nominal,
+          "nomor_rekening": rekeningTujuan,
+        },
+      );
+
+      // mengecek apakah berhasil dengan mengecek status code
+      if (response.statusCode == 200) {
+        var json = response.data;
+        var data = json;
+
+        if (data['status'] != null && data['status'] == 'success') {
+          // UserModel user = UserModel.fromJson(data);
+
+          // simpan data user ke shared preferences
+          // userReferences.setUserId(user.userId);
+          // userReferences.setUserName(user.username);
+          // userReferences.setNama(user.nama);
+          // userReferences.setSaldo(user.saldo);
+          // userReferences.setNomorRekening(user.nomorRekening);
+
+          notifyListeners();
+          return true;
+        } else {
+          throw false;
+        }
+      }
+      throw false;
     } on DioError catch (error, stacktrace) {
       print('Exception occured: $error stackTrace: $stacktrace');
       throw Exception(error.response);

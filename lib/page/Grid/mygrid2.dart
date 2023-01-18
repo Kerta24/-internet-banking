@@ -13,11 +13,11 @@ class MyGrid2 extends StatefulWidget {
 
 class _MyGrid2State extends State<MyGrid2> {
   //1. buat variabel list user model
-  List<ListUsersModel> _listUser = [];
+  List<UserModel> _listUser = [];
 
   //2. buat fungsi get data user
   getUsers() async {
-    ListUserService _service = ListUserService();
+    UsersServices _service = UsersServices();
   }
 
   @override
@@ -41,14 +41,14 @@ class _MyGrid2State extends State<MyGrid2> {
               child: ListView.builder(
                   itemCount: _listUser.length,
                   itemBuilder: (context, index) {
-                    ListUsersModel data = _listUser[index];
+                    UserModel data = _listUser[index];
                     return ListTile(
                       // leading: CircleAvatar(
                       //   backgroundImage: NetworkImage(data.avatar!),
                       // ),
 
-                      title: Text(data.username!),
-                      subtitle: Text(data.nama!),
+                      title: Text(data.username),
+                      subtitle: Text(data.nama),
                       trailing: Text(
                         data.userId.toString(),
                         style: const TextStyle(fontSize: 10),
