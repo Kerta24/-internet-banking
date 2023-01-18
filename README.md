@@ -1,8 +1,10 @@
-# my_koprasi
+# Koprasi Undiksha
 
-A new Flutter project.
+
 
 ## Getting Started
+
+Link Video Youtube https://youtu.be/TcL5yxB9o9o
 
 This project is a starting point for a Flutter application.
 
